@@ -1,0 +1,43 @@
+
+h1 {
+	color: white;
+	text-align:center;
+}
+
+ .wrapper {
+  position: relative;
+  width: 200;
+  height: 200;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.separatorDiv {
+  height: 100;
+}
+
+.signature-pad {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width:200;
+  height:200;
+  background-color: white;
+}
+
+#layerDense {
+  text-align: center;
+}
+#layerDense > div {
+    display: inline-block;
+    vertical-align: middle;
+}
+.layerDenseUnit {
+    background-color: gray;
+    height: 20px;
+    width: 20px;
+    border-radius: 100%;
+    opacity: 0.2;
+}

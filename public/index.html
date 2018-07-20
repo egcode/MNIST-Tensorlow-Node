@@ -1,0 +1,340 @@
+<html>
+  <head>
+    <title>MNIST Predict.</title>
+  </head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <title>MNIST Predict</title>
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <link href="css/mnistStyles.css" rel="stylesheet">
+
+  <style>
+
+.line{
+  position:absolute;
+  width:1px;
+  background-color:gray;
+}  
+
+  </style>
+
+  <body>
+      
+    <!-- <div>
+        <p class="lead">Draw a digit</p>
+    </div> -->
+    
+    <div class="container contentContainer" id="topContainer">
+
+    
+            <div class="wrapper">
+                    <canvas id="signature-pad" class="signature-pad" width=200 height=200></canvas>
+            </div>
+                  
+                  <button id="save-png">Guess Digit</button>
+                  <!-- <button id="save-jpeg">Save as JPEG</button>
+                  <button id="save-svg">Save as SVG</button> 
+                  <button id="draw">Draw</button>
+                  <button id="erase">Erase</button> -->
+                  <button id="clear">Clear</button>         
+        
+        <!-- <div class="center" id="captionDiv">
+                <button class="btn btn-success btn-lg marginTop" type="button" id="caption" onclick="getImageCaptionFromServer()">Get Image Caption</button>        
+        </div>   
+    
+                
+        <div class="messages center">
+                <!-- Image Caption goes here  
+        </div> 
+
+
+        <div class="marginTop center" id="imageDiv" >
+            <img id="imageView"  src="" class="img-thumbnail" alt="Cinque Terre" width="500" height="500">
+        </div> 
+
+        <div class="center" id="refreshButtonDiv">
+                <button class="btn btn-success btn-lg marginTop" type="button" id="restart" onclick="refreshClick()">Try another one</button>        
+        </div>  
+     -->
+
+    </div>
+    <div id="CNNContainer" >
+
+        <div class="marginTop center" id="layer1" >
+        </div> 
+        <div class = "separatorDiv">
+        </div>
+    
+        <div class="marginTop center" id="layer2" >
+        </div> 
+        
+        <div class = "separatorDiv">
+        </div>
+      
+        <div class="marginTop center" id="layer3" >
+        </div> 
+    
+        <div class = "separatorDiv">
+        </div>
+        <div class="marginTop center" id="layerDense" >
+        </div> 
+        <div class = "separatorDiv">
+        </div>
+  
+    </div>
+
+
+    <!-- <div id="div1" style="width: 100px; height: 100px; top:0; left:0; background:#777; position:relative;"></div>
+    <div id="div2" style="width: 100px; height: 100px; top:300px; left:300px; background:#333; position:relative;"></div>
+
+    <svg width="500" height="500"><line x1="50" y1="50" x2="350" y2="350" stroke="black"/></svg> -->
+
+    
+  </body>
+  <script type="text/javascript" src="/js/app.js"></script>
+  <script src="/js/signature_pad.min.js"></script>
+  <script src="/js/spin.js"></script>
+  <script src="/js/jquery-3.1.0.min.js"></script>
+  <script src="/js/jquery.form.min.js"></script>
+  <script>
+
+
+
+
+    var canvas = document.getElementById('signature-pad');
+
+// Adjust canvas coordinate space taking into account pixel ratio,
+// to make it look crisp on mobile devices.
+// This also causes canvas to be cleared.
+function resizeCanvas() {
+    // When zoomed out to less than 100%, for some very strange reason,
+    // some browsers report devicePixelRatio as less than 1
+    // and only part of the canvas is cleared then.
+    var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext("2d").scale(ratio, ratio);
+}
+
+window.onresize = resizeCanvas;
+resizeCanvas();
+
+var signaturePad = new SignaturePad(canvas, {
+  backgroundColor: 'rgb(0, 0, 0)',
+  penColor: 'rgb(255,255,255)'
+// necessary for saving image as JPEG; can be removed is only saving as PNG or SVG
+});
+
+document.getElementById('save-png').addEventListener('click', function () {
+  if (signaturePad.isEmpty()) {
+    return alert("Please provide a signature first.");
+  }
+  
+  var imageBase64 = signaturePad.toDataURL('image/jpeg',0.5);
+  // $("#imageView").attr('src', imageBase64);
+
+  getMnistPredictionFromServer(imageBase64);
+
+  // console.log("original Base 64 : ");
+  // console.log(imageBase64);
+
+//////////  RESIZED VERSION:
+  // var canvas2=document.getElementById("canvas2");
+  // var ctx=canvas2.getContext("2d");
+  // var maxW=100;
+  // var maxH=100;
+  // var img = new Image;
+  // img.onload = function() {
+  //   var iw=img.width;
+  //   var ih=img.height;
+  //   var scale=Math.min((maxW/iw),(maxH/ih));
+  //   var iwScaled=iw*scale;
+  //   var ihScaled=ih*scale;
+  //   canvas2.width=iwScaled;
+  //   canvas2.height=ihScaled;
+  //   ctx.drawImage(img,0,0,iwScaled,ihScaled);
+  //   var resizedImageBase64 = canvas2.toDataURL("image/jpeg",0.5);
+
+  //   // - 2
+  //   getMnistPredictionFromServer(resizedImageBase64);
+
+  // }
+  // // - 1
+  // img.src = imageBase64; //assigning and performing img.onload function
+
+
+});
+
+// document.getElementById('save-jpeg').addEventListener('click', function () {
+//   if (signaturePad.isEmpty()) {
+//     return alert("Please provide a signature first.");
+//   }
+
+//   var data = signaturePad.toDataURL('image/jpeg');
+//   console.log(data);
+//   window.open(data);
+// });
+
+// document.getElementById('save-svg').addEventListener('click', function () {
+//   if (signaturePad.isEmpty()) {
+//     return alert("Please provide a signature first.");
+//   }
+
+//   var data = signaturePad.toDataURL('image/svg+xml');
+//   console.log(data);
+//   console.log(atob(data.split(',')[1]));
+//   window.open(data);
+// });
+
+// document.getElementById('draw').addEventListener('click', function () {
+//   var ctx = canvas.getContext('2d');
+//   console.log(ctx.globalCompositeOperation);
+//   ctx.globalCompositeOperation = 'source-over'; // default value
+// });
+
+// document.getElementById('erase').addEventListener('click', function () {
+//   var ctx = canvas.getContext('2d');
+//   ctx.globalCompositeOperation = 'destination-out';
+// });
+
+document.getElementById('clear').addEventListener('click', function () {
+  signaturePad.clear();
+});
+
+
+// Spinner
+var opts = {
+    lines: 18, // The number of lines to draw
+    length: 0, // The length of each line
+    width: 17, // The line thickness
+    radius: 46, // The radius of the inner circle
+    scale: 1.8, // Scales overall size of the spinner
+    corners: 1, // Corner roundness (0..1)
+    color: '#ffffff', // CSS color or array of colors
+    fadeColor: 'transparent', // CSS color or array of colors
+    speed: 2.2, // Rounds per second
+    rotate: 0, // The rotation offset
+    animation: 'spinner-line-fade-quick', // The CSS animation name for the lines
+    direction: 1, // 1: clockwise, -1: counterclockwise
+    zIndex: 2e9, // The z-index (defaults to 2000000000)
+    className: 'spinner', // The CSS class to assign to the spinner
+    top: '50%', // Top position relative to parent
+    left: '50%', // Left position relative to parent
+    shadow: '0 0 1px transparent', // Box-shadow for the lines
+    position: 'absolute' // Element positioning
+};
+// var target = document.getElementById('topContainer');
+// var spinner = new Spinner(opts).spin(target);
+// var spinner = new Spinner(opts);
+
+
+
+const ENUM_INITIAL_STATE  = 0,
+    ENUM_PREPROCESS_STATE = 1,
+    ENUM_COMPLETED_STATE  = 2;
+
+// Initial UI state
+// uiState(ENUM_INITIAL_STATE);
+
+// UPLOAD
+// $(document).ready(function() {
+
+//     $('#submitButton').bind("click",function() { 
+//         var imgVal = $('#uploadImage').val(); 
+//         if(imgVal=='')  { 
+//             alert("empty input file"); 
+//             return false; 
+//         } else {
+//             uploadImage();
+//         }
+//     }); 
+// });
+
+// CNN Layer 1
+for (i = 1; i <= 6; i++) { 
+  var im = '<img id="L1_i' + i  +'_imageView"  src="" class="img-thumbnail" alt="Cinque Terre" width="100" height="100">';
+  $('#layer1').append(im);
+}
+
+// CNN Layer 2
+for (i = 1; i <= 12; i++) { 
+  var im = '<img id="L2_i' + i  +'_imageView"  src="" class="img-thumbnail" alt="Cinque Terre" width="75" height="75">';
+  $('#layer2').append(im);
+}
+
+// CNN Layer 3
+for (i = 1; i <= 24; i++) { 
+  var im = '<img id="L3_i' + i  +'_imageView"  src="" class="img-thumbnail" alt="Cinque Terre" width="50" height="50">';
+  $('#layer3').append(im);
+}
+
+// DENSE Layer 3
+for (i = 1; i <= 200; i++) { 
+  var rad = 20;
+  var borderRad = rad/2;
+  var denseId = "dense" + (i-1);
+  var circ = '<div id=' + denseId + ' class=\'layerDenseUnit\' </div>';
+  $('#layerDense').append(circ);
+}
+
+// ADD Lines
+for (i = 1; i <= 200; i++) { 
+  var denseId = "dense" + (i-1);
+  // Add Line
+  var lineId = "line" + (i-1);
+  var line = '<div class=\"line\" id=\"'+ lineId + '\"></div>';
+  // console.log("lineId: " + lineId);
+  // console.log("line: " + line);
+
+  $('#CNNContainer').append(line);
+  adjustLine(
+    document.getElementById('layer3'), 
+    document.getElementById(denseId),
+    document.getElementById(lineId)
+  );
+
+}
+
+
+// var layer3Pos = $('#layer3').offset(); // position = { left: 42, top: 567 }
+// var x1 = (layer3Pos+60).left.toString();
+// var y1 = layer3Pos.top.toString()
+// console.log("layer3Pos Left:" + x1);
+// console.log("layer3Pos Top:" + y1);
+
+// var layerDensePos = $('#dense100').offset(); // position = { left: 42, top: 567 }
+// var x2 = layerDensePos.left.toString();
+// var y2 = layerDensePos.top.toString()
+// console.log("layerDensePos Left:" + x2);
+// console.log("layerDensePos Top:" + y2);
+
+// document.body.innerHTML += '<div style="position:relative;width:30px;height:20px;opacity:0.3;z-index:100;background:#000;"></div>';
+// document.body.innerHTML += "<svg width=\"500\" height=\"500\"><line x1=\"" + x1 +  "\" y1=\"" + y1 +  "\" x2=\"" + x2 +  "\" y2=\"" + y2 +  "\" stroke=\"black\"/></svg>";
+
+// LINE
+// document.body.innerHTML += '<div id="line"></div>';
+// adjustLine(
+//   document.getElementById('dense1'), 
+//   document.getElementById('dense100'),
+//   document.getElementById('line')
+// );
+
+// var line = '<div id="line"></div>';
+// $('#CNNContainer').append(line);
+// adjustLine(
+//   document.getElementById('dense1'), 
+//   document.getElementById('dense100'),
+//   document.getElementById('line')
+// );
+
+
+
+  </script>
+  
+</html>
+
