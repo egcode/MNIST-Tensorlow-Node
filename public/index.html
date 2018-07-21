@@ -32,6 +32,13 @@
   column-count: 20;
   column-gap: 10px;
 } 
+.grid-container-softmax {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+  padding-left: 30%;
+  padding-right: 30%;
+} 
 .grid-item-style {
   padding: 1px;
   /* background-color: rgb(223, 223, 223); */
@@ -45,15 +52,10 @@
   border-width: 1px;
 } 
 
-.grid-container-softmax {
-  display: grid;
-  grid-gap: 5px;
-  grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
-  padding-left: 30%;
-  padding-right: 30%;
-} 
-
-
+#resultDiv {
+  padding-left: 48%;
+  padding-right: 48%;
+}
 
   </style>
 
@@ -128,9 +130,14 @@
         <div class = "separatorDiv">
         </div>
 
-        <div class="grid-item-style marginTop center" id="resultSoftmax" >
+        <div class="marginTop center" id="resultDiv" >
+            <div id="resultNeuron" class="grid-item-style">
+              </div>  
         </div> 
 
+        <div class = "separatorDiv">
+        </div>
+  
   
     </div>
 
