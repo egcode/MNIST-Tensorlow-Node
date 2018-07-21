@@ -92,10 +92,23 @@ function getMnistPredictionFromServer(imageBase64) {
                 updateReultLinesPosition();
             }, 100);
               
-
             // PREDICTION
             var prediction = extractPredictionFromResponse(responseFromPython);
             console.log("\nPrediction: " + prediction[1]);
+            var prediction_int = parseInt(prediction[1]);
+
+            
+            // SOFTMAX Layer
+            var softmaxId = "#softmax" + (prediction_int-1);
+            $(softmaxId).css({
+                'background-color': 'black'
+            });
+            // SOFTMAX Recolor Lines
+            var softmaxLineId = "#result_softmax_" + (prediction_int-1) + "_line";
+            // console.log("line: " + line);
+            $(softmaxLineId).css({
+                opacity: 0.9
+            });
             
             
             // var $message = jQuery('.messages');//getting text from textField
@@ -139,9 +152,6 @@ function assignDenseValues(dense){
 
             // ADD Recolor Lines
             var lineId = "#line" + (denseIndex);
-            // console.log("lineId: " + lineId);
-            // console.log("denseIndex: " + li);
-
             // console.log("line: " + line);
             $(lineId).css({
                 opacity: 0.9
