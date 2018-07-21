@@ -345,7 +345,6 @@ for (i = 1; i <= 24; i++) {
 // DENSE Layer
 for (i = 1; i <= 200; i++) { 
   var rad = 20;
-  var borderRad = rad/2;
   var denseId = "dense" + (i-1);
   var circ = '<div id=' + denseId + ' class=\'grid-item-dense\' </div>';
   $('#layerDense').append(circ);
@@ -372,10 +371,28 @@ for (i = 1; i <= 200; i++) {
 // SOFTMAX Layer
 for (i = 1; i <= 10; i++) { 
   var rad = 20;
-  var borderRad = rad/2;
-  var denseId = "dense" + (i-1);
-  var circ = '<div id=' + denseId + ' class=\'grid-item-softmax\' </div>';
+  var softmaxId = "softmax" + (i-1);
+  var circ = '<div id=' + softmaxId + ' class=\'grid-item-softmax\' </div>';
   $('#layerSoftmax').append(circ);
+}
+
+// ADD Softmax Lines
+for (j = 1; j <= 10; j++) { 
+  for (i = 1; i <= 200; i++) { 
+    var softmaxId = "softmax" + (j-1);
+    var denseId = "dense" + (i-1);
+
+    // Add Line
+    var lineId = "softmax_" + (j-1) + "_line_" + (i-1);
+    var line = '<div class=\"line\" id=\"'+ lineId + '\"></div>';
+
+    $('#CNNContainer').append(line);
+    adjustLine(
+      document.getElementById(softmaxId), 
+      document.getElementById(denseId),
+      document.getElementById(lineId)
+    );
+  }
 }
 
 
