@@ -123,16 +123,21 @@ function assignDenseValues(dense){
             var denseValue = value[1];
             // console.log("dense Index: " + denseIndex + " dense Value: " + denseValue);
             var divId = "#dense" + denseIndex;
-            console.log("divId: " + divId);
+            // console.log("divId: " + divId);
+
+            // Neuron color
+            var colorV = (255.0 * (1-denseValue));
+            console.log("denseValue: " + denseValue);
+            console.log("colorV: " + colorV);
             $(divId).css({
-                opacity: denseValue,
-                'background-color':'red',
-                'border': '2px solid black'
+                // opacity: denseValue,
+                'background-color':"rgb(" + colorV + "," + colorV + "," + colorV + ")"
+                // 'border': '2px solid black'
             });
 
             // ADD Recolor Lines
             var lineId = "#line" + (denseIndex);
-            console.log("lineId: " + lineId);
+            // console.log("lineId: " + lineId);
             // console.log("denseIndex: " + li);
 
             // console.log("line: " + line);
