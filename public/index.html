@@ -24,7 +24,7 @@
 }  
 
 
-.grid-container {
+.grid-container-dense {
   display: grid;
   grid-gap: 5px;
   grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
@@ -32,7 +32,7 @@
   column-count: 20;
   column-gap: 10px;
 } 
-.grid-item {
+.grid-item-dense {
   padding: 1px;
   background-color: rgb(223, 223, 223);
   border-radius: 100%;
@@ -41,8 +41,27 @@
   border-color: rgb(211, 211, 211);  
   border-style: solid;
   border-width: 1px;
-
 } 
+
+
+.grid-container-softmax {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+  padding-left: 30%;
+  padding-right: 30%;
+} 
+.grid-item-softmax {
+  padding: 1px;
+  background-color: rgb(223, 223, 223);
+  border-radius: 100%;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+
+  border-color: rgb(211, 211, 211);  
+  border-style: solid;
+  border-width: 1px;
+} 
+
 
   </style>
 
@@ -105,11 +124,18 @@
         <div class = "separatorDiv">
         </div>
 
-        <div class="grid-container marginTop center" id="layerDense" >
+        <div class="grid-container-dense marginTop center" id="layerDense" >
         </div> 
 
         <div class = "separatorDiv">
         </div>
+        
+        <div class="grid-container-softmax marginTop center" id="layerSoftmax" >
+        </div> 
+
+        <div class = "separatorDiv">
+        </div>
+
   
     </div>
 
@@ -316,16 +342,16 @@ for (i = 1; i <= 24; i++) {
   $('#layer3').append(im);
 }
 
-// DENSE Layer 3
+// DENSE Layer
 for (i = 1; i <= 200; i++) { 
   var rad = 20;
   var borderRad = rad/2;
   var denseId = "dense" + (i-1);
-  var circ = '<div id=' + denseId + ' class=\'grid-item layerDenseUnit\' </div>';
+  var circ = '<div id=' + denseId + ' class=\'grid-item-dense\' </div>';
   $('#layerDense').append(circ);
 }
 
-// ADD Lines
+// ADD Dense Lines
 for (i = 1; i <= 200; i++) { 
   var denseId = "dense" + (i-1);
   // Add Line
@@ -340,40 +366,17 @@ for (i = 1; i <= 200; i++) {
     document.getElementById(denseId),
     document.getElementById(lineId)
   );
-
 }
 
 
-// var layer3Pos = $('#layer3').offset(); // position = { left: 42, top: 567 }
-// var x1 = (layer3Pos+60).left.toString();
-// var y1 = layer3Pos.top.toString()
-// console.log("layer3Pos Left:" + x1);
-// console.log("layer3Pos Top:" + y1);
-
-// var layerDensePos = $('#dense100').offset(); // position = { left: 42, top: 567 }
-// var x2 = layerDensePos.left.toString();
-// var y2 = layerDensePos.top.toString()
-// console.log("layerDensePos Left:" + x2);
-// console.log("layerDensePos Top:" + y2);
-
-// document.body.innerHTML += '<div style="position:relative;width:30px;height:20px;opacity:0.3;z-index:100;background:#000;"></div>';
-// document.body.innerHTML += "<svg width=\"500\" height=\"500\"><line x1=\"" + x1 +  "\" y1=\"" + y1 +  "\" x2=\"" + x2 +  "\" y2=\"" + y2 +  "\" stroke=\"black\"/></svg>";
-
-// LINE
-// document.body.innerHTML += '<div id="line"></div>';
-// adjustLine(
-//   document.getElementById('dense1'), 
-//   document.getElementById('dense100'),
-//   document.getElementById('line')
-// );
-
-// var line = '<div id="line"></div>';
-// $('#CNNContainer').append(line);
-// adjustLine(
-//   document.getElementById('dense1'), 
-//   document.getElementById('dense100'),
-//   document.getElementById('line')
-// );
+// SOFTMAX Layer
+for (i = 1; i <= 10; i++) { 
+  var rad = 20;
+  var borderRad = rad/2;
+  var denseId = "dense" + (i-1);
+  var circ = '<div id=' + denseId + ' class=\'grid-item-softmax\' </div>';
+  $('#layerSoftmax').append(circ);
+}
 
 
   </script>
