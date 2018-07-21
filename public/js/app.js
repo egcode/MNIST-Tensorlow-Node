@@ -84,7 +84,7 @@ function getMnistPredictionFromServer(imageBase64) {
             
             // DENSE Layer
             var dense = extractDenseFromResponse(responseFromPython);
-            console.log("\nDense: " + dense);
+            // console.log("\nDense: " + dense);
             assignDenseValues(dense);
             setTimeout(function(){
                 updateDenseLinesPosition();

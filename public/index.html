@@ -32,9 +32,11 @@
   column-count: 20;
   column-gap: 10px;
 } 
-.grid-item-dense {
+.grid-item-style {
   padding: 1px;
-  background-color: rgb(223, 223, 223);
+  /* background-color: rgb(223, 223, 223); */
+  background-color:white;
+
   border-radius: 100%;
   padding-top: 100%; /* 1:1 Aspect Ratio */
 
@@ -42,7 +44,6 @@
   border-style: solid;
   border-width: 1px;
 } 
-
 
 .grid-container-softmax {
   display: grid;
@@ -51,16 +52,7 @@
   padding-left: 30%;
   padding-right: 30%;
 } 
-.grid-item-softmax {
-  padding: 1px;
-  background-color: rgb(223, 223, 223);
-  border-radius: 100%;
-  padding-top: 100%; /* 1:1 Aspect Ratio */
 
-  border-color: rgb(211, 211, 211);  
-  border-style: solid;
-  border-width: 1px;
-} 
 
 
   </style>
@@ -135,6 +127,9 @@
 
         <div class = "separatorDiv">
         </div>
+
+        <div class="grid-item-style marginTop center" id="resultSoftmax" >
+        </div> 
 
   
     </div>
@@ -366,7 +361,7 @@ for (i = 1; i <= 24; i++) {
 for (i = 1; i <= 200; i++) { 
   var rad = 20;
   var denseId = "dense" + (i-1);
-  var circ = '<div id=' + denseId + ' class=\'grid-item-dense\' </div>';
+  var circ = '<div id=' + denseId + ' class=\'grid-item-style\' </div>';
   $('#layerDense').append(circ);
 }
 
@@ -392,7 +387,7 @@ for (i = 1; i <= 200; i++) {
 for (i = 1; i <= 10; i++) { 
   var rad = 20;
   var softmaxId = "softmax" + (i-1);
-  var circ = '<div id=' + softmaxId + ' class=\'grid-item-softmax\' </div>';
+  var circ = '<div id=' + softmaxId + ' class=\'grid-item-style\' </div>';
   $('#layerSoftmax').append(circ);
 }
 
