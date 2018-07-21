@@ -95,20 +95,9 @@ function getMnistPredictionFromServer(imageBase64) {
             // PREDICTION
             var prediction = extractPredictionFromResponse(responseFromPython);
             console.log("\nPrediction: " + prediction[1]);
-            var prediction_int = parseInt(prediction[1]);
 
-            
-            // SOFTMAX Layer
-            var softmaxId = "#softmax" + (prediction_int-1);
-            $(softmaxId).css({
-                'background-color': 'black'
-            });
-            // SOFTMAX Recolor Lines
-            var softmaxLineId = "#result_softmax_" + (prediction_int-1) + "_line";
-            // console.log("line: " + line);
-            $(softmaxLineId).css({
-                opacity: 0.9
-            });
+            // SOFTMAX
+            assignSoftmaxValues(prediction);
             
             
             // var $message = jQuery('.messages');//getting text from textField
@@ -127,6 +116,21 @@ function getMnistPredictionFromServer(imageBase64) {
 
         }
     }); 
+}
+
+function assignSoftmaxValues(prediction) {
+    var prediction_int = parseInt(prediction[1]);
+    // SOFTMAX Layer
+    var softmaxId = "#softmax" + (prediction_int-1);
+    $(softmaxId).css({
+        'background-color': 'black'
+    });
+    // SOFTMAX Recolor Lines
+    var softmaxLineId = "#result_softmax_" + (prediction_int-1) + "_line";
+    // console.log("line: " + line);
+    $(softmaxLineId).css({
+        opacity: 0.9
+    });
 }
 
 function assignDenseValues(dense){
