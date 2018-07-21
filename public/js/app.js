@@ -89,6 +89,7 @@ function getMnistPredictionFromServer(imageBase64) {
             setTimeout(function(){
                 updateDenseLinesPosition();
                 updateSoftmaxLinesPosition();
+                updateReultLinesPosition();
             }, 100);
               
 

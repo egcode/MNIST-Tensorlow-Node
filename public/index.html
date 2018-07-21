@@ -176,7 +176,25 @@ function resizeCanvas() {
 
     updateDenseLinesPosition();
     updateSoftmaxLinesPosition();
+    updateReultLinesPosition();
+}
 
+function updateReultLinesPosition() {
+  // AJUST Result Lines
+  for (i = 1; i <= 10; i++) { 
+      var softmaxId = "softmax" + (i-1);
+
+      // Add Line
+      var lineId = "result_softmax_" + (i-1) + "_line";
+
+      if ($("#" + lineId).length && $("#" + softmaxId).length){
+          adjustLine(
+          document.getElementById(softmaxId), 
+          document.getElementById("resultNeuron"),
+          document.getElementById(lineId)
+        );
+      }
+  }
 }
 function updateSoftmaxLinesPosition(){
   // ADJUST Softmax Lines
@@ -415,6 +433,23 @@ for (j = 1; j <= 10; j++) {
       document.getElementById(lineId)
     );
   }
+}
+
+
+// ADD Result Lines
+for (i = 1; i <= 10; i++) { 
+    var softmaxId = "softmax" + (i-1);
+
+    // Add Line
+    var lineId = "result_softmax_" + (i-1) + "_line";
+    var line = '<div class=\"line\" id=\"'+ lineId + '\"></div>';
+
+    $('#CNNContainer').append(line);
+    adjustLine(
+      document.getElementById(softmaxId), 
+      document.getElementById("resultNeuron"),
+      document.getElementById(lineId)
+    );
 }
 
 
