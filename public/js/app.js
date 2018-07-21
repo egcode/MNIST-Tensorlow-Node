@@ -64,6 +64,10 @@ function getMnistPredictionFromServer(imageBase64) {
             console.log('\n\nCLIENT: success responseFromPython:');
             console.log(responseFromPython);
 
+            // PREDICTION
+            var prediction = extractPredictionFromResponse(responseFromPython);
+            console.log("\nPrediction: " + prediction[1]);
+            
             // CNN Layer1 
             for (i = 1; i <= 6; i++) { 
                 var id = "#L1_i" + i + "_imageView";
@@ -85,20 +89,17 @@ function getMnistPredictionFromServer(imageBase64) {
             // DENSE Layer
             var dense = extractDenseFromResponse(responseFromPython);
             // console.log("\nDense: " + dense);
-            assignDenseValues(dense);
+            assignDenseAndSoftmaxValues(dense, prediction);
             setTimeout(function(){
                 updateDenseLinesPosition();
                 updateSoftmaxLinesPosition();
                 updateReultLinesPosition();
             }, 100);
               
-            // PREDICTION
-            var prediction = extractPredictionFromResponse(responseFromPython);
-            console.log("\nPrediction: " + prediction[1]);
 
             // SOFTMAX
             assignSoftmaxValues(prediction);
-            
+              
             
             // var $message = jQuery('.messages');//getting text from textField
             // $message.append('<h1><strong>' + caption + '</strong></h1>');
@@ -121,45 +122,56 @@ function getMnistPredictionFromServer(imageBase64) {
 function assignSoftmaxValues(prediction) {
     var prediction_int = parseInt(prediction[1]);
     // SOFTMAX Layer
-    var softmaxId = "#softmax" + (prediction_int-1);
+    var softmaxId = "#softmax" + (prediction_int);
     $(softmaxId).css({
         'background-color': 'black'
     });
     // SOFTMAX Recolor Lines
-    var softmaxLineId = "#result_softmax_" + (prediction_int-1) + "_line";
+    var softmaxLineId = "#result_softmax_" + (prediction_int) + "_line";
     // console.log("line: " + line);
     $(softmaxLineId).css({
         opacity: 0.9
     });
 }
 
-function assignDenseValues(dense){
+function assignDenseAndSoftmaxValues(dense, prediction){
     var denseJson = JSON.parse(dense);
     for (var key in denseJson) {
         if (denseJson.hasOwnProperty(key)) {
             var value = denseJson[key].split("tuple");
             var denseIndex = value[0];
             var denseValue = value[1];
-            // console.log("dense Index: " + denseIndex + " dense Value: " + denseValue);
             var divId = "#dense" + denseIndex;
-            // console.log("divId: " + divId);
 
             // Neuron color
             var colorV = (255.0 * (1-denseValue));
-            console.log("denseValue: " + denseValue);
-            console.log("colorV: " + colorV);
+            // console.log("denseValue: " + denseValue);
+            // console.log("colorV: " + colorV);
             $(divId).css({
-                // opacity: denseValue,
                 'background-color':"rgb(" + colorV + "," + colorV + "," + colorV + ")"
-                // 'border': '2px solid black'
             });
 
-            // ADD Recolor Lines
+            // DENSE Recolor Lines
             var lineId = "#line" + (denseIndex);
             // console.log("line: " + line);
             $(lineId).css({
                 opacity: 0.9
             });
+
+            // SOFTMAX Recolor Lines
+            var prediction_int = parseInt(prediction[1]);
+            // var softmaxId = "#softmax" + (prediction_int-1);
+            var lineSoftmaxId = "#softmax_" + (prediction_int) + "_line_" + (denseIndex);
+            // console.log("aaa\n\n\n");
+            // console.log("CORRECT denseIndex: " + denseIndex);
+            // console.log("prediction_int: " + prediction_int);
+            // console.log("softmaxId: " + softmaxId);
+            // console.log("lineSoftmaxId: " + lineSoftmaxId);
+
+            $(lineSoftmaxId).css({
+                opacity: 0.9
+            });
+
 
         }
     }
