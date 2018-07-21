@@ -87,7 +87,8 @@ function getMnistPredictionFromServer(imageBase64) {
             console.log("\nDense: " + dense);
             assignDenseValues(dense);
             setTimeout(function(){
-                updateLinesPosition();
+                updateDenseLinesPosition();
+                updateSoftmaxLinesPosition();
             }, 100);
               
 

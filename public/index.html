@@ -172,10 +172,30 @@ function resizeCanvas() {
     canvas.getContext("2d").scale(ratio, ratio);
     console.log("window resized");
 
-    updateLinesPosition();
+    updateDenseLinesPosition();
+    updateSoftmaxLinesPosition();
+
 }
-function updateLinesPosition(){
-    // ADJUST Lines
+function updateSoftmaxLinesPosition(){
+  // ADJUST Softmax Lines
+  for (j = 1; j <= 10; j++) { 
+    for (i = 1; i <= 200; i++) { 
+      var softmaxId = "softmax" + (j-1);
+      var denseId = "dense" + (i-1);
+      var lineId = "softmax_" + (j-1) + "_line_" + (i-1);
+
+      if ( $("#" + denseId ).length && $("#" + lineId).length && $("#" + softmaxId).length){
+          adjustLine(
+          document.getElementById(softmaxId), 
+          document.getElementById(denseId),
+          document.getElementById(lineId)
+        );
+      }
+    }
+  }
+}
+function updateDenseLinesPosition(){
+    // ADJUST Dense Lines
     for (i = 1; i <= 200; i++) { 
       var denseId = "dense" + (i-1);
       var lineId = "line" + (i-1);
