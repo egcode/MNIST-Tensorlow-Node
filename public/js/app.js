@@ -86,6 +86,10 @@ function getMnistPredictionFromServer(imageBase64) {
             var dense = extractDenseFromResponse(responseFromPython);
             console.log("\nDense: " + dense);
             assignDenseValues(dense);
+            setTimeout(function(){
+                updateLinesPosition();
+            }, 100);
+              
 
             // PREDICTION
             var prediction = extractPredictionFromResponse(responseFromPython);
@@ -119,12 +123,23 @@ function assignDenseValues(dense){
             var denseValue = value[1];
             // console.log("dense Index: " + denseIndex + " dense Value: " + denseValue);
             var divId = "#dense" + denseIndex;
-            // console.log("divId: " + divId);
+            console.log("divId: " + divId);
             $(divId).css({
                 opacity: denseValue,
                 'background-color':'red',
                 'border': '2px solid black'
             });
+
+            // ADD Recolor Lines
+            var lineId = "#line" + (denseIndex);
+            console.log("lineId: " + lineId);
+            // console.log("denseIndex: " + li);
+
+            // console.log("line: " + line);
+            $(lineId).css({
+                opacity: 0.9
+            });
+
         }
     }
 }

@@ -19,7 +19,25 @@
   position:absolute;
   width:1px;
   background-color:gray;
+  opacity: 0.0;
+  z-index: -1;
 }  
+
+
+.grid-container {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
+  padding: 20px;
+  column-count: 20;
+  column-gap: 10px;
+} 
+.grid-item {
+  padding: 1px;
+  background-color: gray;
+  border-radius: 100%;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+} 
 
   </style>
 
@@ -29,7 +47,7 @@
         <p class="lead">Draw a digit</p>
     </div> -->
     
-    <div class="container contentContainer" id="topContainer">
+    <div class="container contentContainer center" id="topContainer">
 
     
             <div class="wrapper">
@@ -81,8 +99,10 @@
     
         <div class = "separatorDiv">
         </div>
-        <div class="marginTop center" id="layerDense" >
+
+        <div class="grid-container marginTop center" id="layerDense" >
         </div> 
+
         <div class = "separatorDiv">
         </div>
   
@@ -119,6 +139,24 @@ function resizeCanvas() {
     canvas.width = canvas.offsetWidth * ratio;
     canvas.height = canvas.offsetHeight * ratio;
     canvas.getContext("2d").scale(ratio, ratio);
+    console.log("window resized");
+
+    updateLinesPosition();
+}
+function updateLinesPosition(){
+    // ADJUST Lines
+    for (i = 1; i <= 200; i++) { 
+      var denseId = "dense" + (i-1);
+      var lineId = "line" + (i-1);
+
+      if ( $("#" + denseId ).length && $("#" + lineId).length) {
+          adjustLine(
+          document.getElementById('layer3'), 
+          document.getElementById(denseId),
+          document.getElementById(lineId)
+        );
+      }
+    }
 }
 
 window.onresize = resizeCanvas;
@@ -278,7 +316,7 @@ for (i = 1; i <= 200; i++) {
   var rad = 20;
   var borderRad = rad/2;
   var denseId = "dense" + (i-1);
-  var circ = '<div id=' + denseId + ' class=\'layerDenseUnit\' </div>';
+  var circ = '<div id=' + denseId + ' class=\'grid-item layerDenseUnit\' </div>';
   $('#layerDense').append(circ);
 }
 
@@ -331,7 +369,6 @@ for (i = 1; i <= 200; i++) {
 //   document.getElementById('dense100'),
 //   document.getElementById('line')
 // );
-
 
 
   </script>
