@@ -185,57 +185,6 @@ function resizeCanvas() {
     updateReultLinesPosition();
 }
 
-function updateReultLinesPosition() {
-  // AJUST Result Lines
-  for (i = 1; i <= 10; i++) { 
-      var softmaxId = "softmax" + (i-1);
-
-      // Add Line
-      var lineId = "result_softmax_" + (i-1) + "_line";
-
-      if ($("#" + lineId).length && $("#" + softmaxId).length){
-          adjustLine(
-          document.getElementById(softmaxId), 
-          document.getElementById("resultNeuron"),
-          document.getElementById(lineId)
-        );
-      }
-  }
-}
-function updateSoftmaxLinesPosition(){
-  // ADJUST Softmax Lines
-  for (j = 1; j <= 10; j++) { 
-    for (i = 1; i <= 200; i++) { 
-      var softmaxId = "softmax" + (j-1);
-      var denseId = "dense" + (i-1);
-      var lineId = "softmax_" + (j-1) + "_line_" + (i-1);
-
-      if ( $("#" + denseId ).length && $("#" + lineId).length && $("#" + softmaxId).length){
-          adjustLine(
-          document.getElementById(softmaxId), 
-          document.getElementById(denseId),
-          document.getElementById(lineId)
-        );
-      }
-    }
-  }
-}
-function updateDenseLinesPosition(){
-    // ADJUST Dense Lines
-    for (i = 1; i <= 200; i++) { 
-      var denseId = "dense" + (i-1);
-      var lineId = "line" + (i-1);
-
-      if ( $("#" + denseId ).length && $("#" + lineId).length) {
-          adjustLine(
-          document.getElementById('layer3'), 
-          document.getElementById(denseId),
-          document.getElementById(lineId)
-        );
-      }
-    }
-}
-
 window.onresize = resizeCanvas;
 resizeCanvas();
 
