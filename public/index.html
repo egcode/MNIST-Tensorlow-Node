@@ -15,6 +15,10 @@
 
   <style>
 
+body {
+    background-color: lightblue;
+}
+
 .line{
   position:absolute;
   width:1px;
@@ -74,7 +78,7 @@
 
     
             <div class="wrapper">
-                    <canvas id="signature-pad" class="signature-pad" width=200 height=200></canvas>
+                    <canvas id="signature-pad" class="signature-pad" width=50% height=calc(width * 1.0)></canvas>
             </div>
                   
                   <button id="save-png">Guess Digit</button>
@@ -165,7 +169,7 @@
 
 
 
-    var canvas = document.getElementById('signature-pad');
+  var canvas = document.getElementById('signature-pad');
 
 // Adjust canvas coordinate space taking into account pixel ratio,
 // to make it look crisp on mobile devices.
@@ -178,7 +182,18 @@ function resizeCanvas() {
     canvas.width = canvas.offsetWidth * ratio;
     canvas.height = canvas.offsetHeight * ratio;
     canvas.getContext("2d").scale(ratio, ratio);
-    console.log("window resized");
+
+    // Signature color on resize
+    $('#signature-pad').css({
+       'backgroundColor': 'rgb(0, 0, 0)',
+        'penColor': 'rgb(255,255,255)'
+    });
+
+
+    console.log("\nwindow resized");
+    console.log("Canvas width: " + canvas.width);
+    console.log("Canvas height: " + canvas.height);
+
 
     updateDenseLinesPosition();
     updateSoftmaxLinesPosition();
