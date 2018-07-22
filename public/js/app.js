@@ -100,7 +100,12 @@ function getMnistPredictionFromServer(imageBase64) {
             // SOFTMAX
             assignSoftmaxValues(prediction);
               
-            
+            // RESULT
+            $('#resultNeuron').text(prediction[1]);
+            $('#resultNeuron').css("color", "red"); // Font color        
+
+
+
             // var $message = jQuery('.messages');//getting text from textField
             // $message.append('<h1><strong>' + caption + '</strong></h1>');
             // $(".messages").show(animSpeed);
