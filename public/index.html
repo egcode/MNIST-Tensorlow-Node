@@ -15,57 +15,6 @@
 
   <style>
 
-body {
-    background-color: lightblue;
-}
-
-.line{
-  position:absolute;
-  width:1px;
-  background-color:gray;
-  opacity: 0.1;
-  z-index: -1;
-}  
-
-
-.grid-container-dense {
-  display: grid;
-  grid-gap: 0%;
-  grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto;
-  padding: 20px;
-} 
-.grid-container-softmax {
-  display: grid;
-  grid-gap: 0%;
-  grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
-  padding-left: 30%;
-  padding-right: 30%;
-} 
-
-.grid-item-style {
-  /* padding: 0%; */
-  background-color:white;
-
-  border-radius: 100%;
-  /* padding-top: 100%;   1:1 Aspect Ratio */
-
-  border-color: rgb(211, 211, 211);  
-  border-style: solid;
-  border-width: 1px;
-  
-  font-size: 2vw;
-  text-align: center;
-
-  color: rgba(0, 0, 0, 0.0);  /* font color */
-
-} 
-
-#resultDiv {
-  padding-left: 48%;
-  padding-right: 48%;
-}
-
-
   </style>
 
   <body>
@@ -83,7 +32,7 @@ body {
             <button id="save-png">Guess Digit</button>
             <button id="clear">Clear</button>         
     </div>
-    
+
     <div class = "separatorDiv">
     </div>
 
@@ -167,12 +116,7 @@ function resizeCanvas() {
         'penColor': 'rgb(255,255,255)'
     });
 
-
-    console.log("\nwindow resized");
-    console.log("Canvas width: " + canvas.width);
-    console.log("Canvas height: " + canvas.height);
-
-
+    updateCNNLinesPosition();
     updateDenseLinesPosition();
     updateSoftmaxLinesPosition();
     updateReultLinesPosition();
@@ -337,6 +281,34 @@ for (i = 1; i <= 200; i++) {
   var circ = '<div id=' + denseId + ' class=\'grid-item-style\' >0</div>';
   $('#layerDense').append(circ);
 }
+
+
+// ADD CNN Lines
+// Add Line
+var lineId1 = "cnn_" + 1 + "_line";
+var lineId2 = "cnn_" + 2 + "_line";
+var lineId3 = "cnn_" + 3 + "_line";
+var line1 = '<div class=\"lineCNN\" id=\"'+ lineId1 + '\" ></div>';
+var line2 = '<div class=\"lineCNN\" id=\"'+ lineId2 + '\" ></div>';
+var line3 = '<div class=\"lineCNN\" id=\"'+ lineId3 + '\" ></div>';
+$('#CNNContainer').append(line1);
+$('#CNNContainer').append(line2);
+$('#CNNContainer').append(line3);
+adjustLine(
+  document.getElementById("topContainer"), 
+  document.getElementById("layer1"),
+  document.getElementById(lineId1)
+);
+adjustLine(
+  document.getElementById("layer1"), 
+  document.getElementById("layer2"),
+  document.getElementById(lineId2)
+);
+adjustLine(
+  document.getElementById("layer2"), 
+  document.getElementById("layer3"),
+  document.getElementById(lineId3)
+);
 
 // ADD Dense Lines
 for (i = 1; i <= 200; i++) { 

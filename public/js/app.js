@@ -91,6 +91,7 @@ function getMnistPredictionFromServer(imageBase64) {
             // console.log("\nDense: " + dense);
             assignDenseAndSoftmaxValues(dense, prediction);
             setTimeout(function(){
+                updateCNNLinesPosition();
                 updateDenseLinesPosition();
                 updateSoftmaxLinesPosition();
                 updateReultLinesPosition();
@@ -252,6 +253,30 @@ function adjustLine(from, to, line){
   }
 
   // --------------- RESIZE METHODS ----------------------
+
+  function updateCNNLinesPosition() {
+        // ADJUST CNN Lines
+        var lineId1 = "cnn_" + 1 + "_line";
+        var lineId2 = "cnn_" + 2 + "_line";
+        var lineId3 = "cnn_" + 3 + "_line";
+        if ( $("#" + lineId1 ).length && $("#" + lineId2).length && $("#" + lineId3).length){
+            adjustLine(
+                document.getElementById("topContainer"), 
+                document.getElementById("layer1"),
+                document.getElementById(lineId1)
+                );
+                adjustLine(
+                document.getElementById("layer1"), 
+                document.getElementById("layer2"),
+                document.getElementById(lineId2)
+                );
+                adjustLine(
+                document.getElementById("layer2"), 
+                document.getElementById("layer3"),
+                document.getElementById(lineId3)
+                );
+        }
+  }
 
   function updateReultLinesPosition() {
     // AJUST Result Lines
