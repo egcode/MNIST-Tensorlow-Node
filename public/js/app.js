@@ -3,6 +3,9 @@ animSpeed = 100;
 
 function uiState(state) {
     if (state == ENUM_INITIAL_STATE) {
+        
+        $("#CNNContainer").hide(animSpeed);
+
         // $("#formDiv").show(animSpeed);
         // $("#imageDiv").hide(animSpeed);
         // $("#captionDiv").hide(animSpeed);
@@ -15,6 +18,8 @@ function uiState(state) {
         // $("#captionDiv").show(animSpeed);
         // $("#refreshButtonDiv").hide(animSpeed);
     } else if (state == ENUM_COMPLETED_STATE) {
+        $("#CNNContainer").show(animSpeed);
+
         // uiState(ENUM_PREPROCESS_STATE);
         // $("#refreshButtonDiv").show(animSpeed);
     }
@@ -53,8 +58,8 @@ function getMnistPredictionFromServer(imageBase64) {
     // Hide button
     // $("#caption").hide(animSpeed);
 
-    // var target = document.getElementById('imageDiv');
-    // var spinner = new Spinner(opts).spin(target);
+    var target = document.getElementById('topContainer');
+    var spinner = new Spinner(opts).spin(target);
 
     $.ajax('http://localhost:3030/process', {
         type: 'POST',
@@ -105,21 +110,15 @@ function getMnistPredictionFromServer(imageBase64) {
             $('#resultNeuron').text(prediction[1]);
             $('#resultNeuron').css("color", "red"); // Font color        
 
-
-
-            // var $message = jQuery('.messages');//getting text from textField
-            // $message.append('<h1><strong>' + caption + '</strong></h1>');
-            // $(".messages").show(animSpeed);
-
-            // uiState(ENUM_COMPLETED_STATE);
-            // spinner.stop(target);
-
+            uiState(ENUM_COMPLETED_STATE);
+            spinner.stop(target);
+            
         },
         error  : function(data) { 
-            // uiState(ENUM_INITIAL_STATE);
+            uiState(ENUM_INITIAL_STATE);
             console.log('CLIENT: error');
             console.log(data);
-            // spinner.stop(target);
+            spinner.stop(target);
 
         }
     }); 
@@ -333,6 +332,8 @@ function adjustLine(from, to, line){
     // --------------- INIT COLORS ----------------------
 
     function initColors(){
+        uiState(ENUM_INITIAL_STATE);
+
         // INIT Dense 
         for (i = 1; i <= 200; i++) { 
             var denseId = "#dense" + (i-1);
@@ -373,3 +374,5 @@ function adjustLine(from, to, line){
         // INIT RESULT
         $('#resultNeuron').css("color", "rgba(0, 0, 0, 0.0)"); // Font color        
 }
+
+
