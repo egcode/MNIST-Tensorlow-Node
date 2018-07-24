@@ -3,25 +3,17 @@ animSpeed = 100;
 
 function uiState(state) {
     if (state == ENUM_INITIAL_STATE) {
-        
         $("#CNNContainer").hide(animSpeed);
-
-        // $("#formDiv").show(animSpeed);
-        // $("#imageDiv").hide(animSpeed);
-        // $("#captionDiv").hide(animSpeed);
-        // $(".messages").hide(animSpeed);
-        // $("#refreshButtonDiv").hide(animSpeed);
-    } else if (state == ENUM_PREPROCESS_STATE) {
-        // $("#formDiv").hide(animSpeed);
-        // $("#imageView").attr('src', '/img/imagedata');
-        // $("#imageDiv").show(animSpeed);
-        // $("#captionDiv").show(animSpeed);
-        // $("#refreshButtonDiv").hide(animSpeed);
+        $("#guess-digit").show(animSpeed);
+        $("#clear").show(animSpeed);
+    } else if (state == ENUM_PROCESS_STATE) {
+        $("#CNNContainer").hide(animSpeed);
+        $("#guess-digit").hide(animSpeed);
+        $("#clear").hide(animSpeed);
     } else if (state == ENUM_COMPLETED_STATE) {
         $("#CNNContainer").show(animSpeed);
-
-        // uiState(ENUM_PREPROCESS_STATE);
-        // $("#refreshButtonDiv").show(animSpeed);
+        $("#guess-digit").show(animSpeed);
+        $("#clear").show(animSpeed);
     }
   }
 
@@ -60,6 +52,8 @@ function getMnistPredictionFromServer(imageBase64) {
 
     var target = document.getElementById('topContainer');
     var spinner = new Spinner(opts).spin(target);
+
+    uiState(ENUM_PROCESS_STATE);
 
     $.ajax('http://localhost:3030/process', {
         type: 'POST',
