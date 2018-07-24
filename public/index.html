@@ -19,18 +19,16 @@
 
   <body>
       
-    <!-- <div>
-        <p class="lead">Draw a digit</p>
-    </div> -->
+    <div>
+        <p class="lead center">Draw a digit in a black area and hit "Guess Digit" button</p>
+    </div>
     
-    <div class="container contentContainer center" id="topContainer">
-
-            <div class="wrapper">
-                    <canvas id="signature-pad" class="signature-pad"></canvas>
-            </div>
-
-            <button id="save-png">Guess Digit</button>
-            <button id="clear">Clear</button>         
+    <div class="center top" id="topContainer">
+        <button id="guess-digit">Guess Digit</button>
+        <button id="clear">Clear</button>         
+        <div class="wrapper">
+              <canvas id="signature-pad" class="signature-pad"></canvas>
+        </div>
     </div>
 
     <div class = "separatorDiv">
@@ -132,7 +130,7 @@ var signaturePad = new SignaturePad(canvas, {
   maxWidth: 15
 });
 
-document.getElementById('save-png').addEventListener('click', function () {
+document.getElementById('guess-digit').addEventListener('click', function () {
   if (signaturePad.isEmpty()) {
     return alert("Please provide a signature first.");
   }
