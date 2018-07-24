@@ -22,8 +22,16 @@ h1 {
 }
 
 .separatorDiv {
-  height: 75;
+  height: 75px;
 }
+
+.buttonsMargin{
+  margin-left:4%;
+}
+.buttonsMarginBottom{
+  margin-bottom:10px;
+}
+
 
 .signature-pad {
   position: relative;
