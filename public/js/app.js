@@ -338,20 +338,17 @@ function adjustLine(from, to, line){
         // INIT Dense 
         for (i = 1; i <= 200; i++) { 
             var denseId = "#dense" + (i-1);
-            // Add Line
-            var lineId = "#ine" + (i-1);
+            var lineId = "#line" + (i-1);
 
             // Neuron color
             $(denseId).css({
                 'background-color':"white"
             });
 
-            // // DENSE Recolor Lines
-            // var lineId = "#line" + (denseId);
-            // // console.log("line: " + line);
-            // $(lineId).css({
-            //     opacity: 0.1
-            // });
+            // DENSE Recolor Lines
+            $(lineId).css({
+                opacity: 0.1
+            });
 
             // // INIT Softmax Lines
             // for (j = 1; j <= 10; j++) { 
@@ -367,11 +364,18 @@ function adjustLine(from, to, line){
             // }
 
         }
-        // INIT Softmax
+
+        // INIT Softmax Neurons
         for (j = 1; j <= 10; j++) { 
             var softmaxId = "#softmax" + (j-1);
             $(softmaxId).css({
                 'background-color':"white"
+            });
+
+            // INIT Result Lines
+            var lineId = "#result_softmax_" + (j-1) + "_line";
+            $(lineId).css({
+                opacity: 0.1
             });
         }
 
