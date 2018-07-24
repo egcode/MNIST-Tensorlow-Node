@@ -329,3 +329,54 @@ function adjustLine(from, to, line){
       }
   }
   
+
+    // --------------- INIT COLORS ----------------------
+
+    function initDenseAndSoftmaxColors(){
+
+
+        // INIT Dense 
+        for (i = 1; i <= 200; i++) { 
+            var denseId = "#dense" + (i-1);
+            // Add Line
+            var lineId = "#ine" + (i-1);
+
+            // Neuron color
+            $(denseId).css({
+                'background-color':"white"
+            });
+
+            // // DENSE Recolor Lines
+            // var lineId = "#line" + (denseId);
+            // // console.log("line: " + line);
+            // $(lineId).css({
+            //     opacity: 0.1
+            // });
+
+            // // INIT Softmax Lines
+            // for (j = 1; j <= 10; j++) { 
+            //     var lineSoftmaxId = "#softmax_" + j + "_line_" + (denseId);
+            //     var softmaxId = "#softmax" + (j-1);
+            //     $(softmaxId).css({
+            //         'background-color':"white"
+            //     });
+    
+            //     $(lineSoftmaxId).css({
+            //         opacity: 0.1
+            //     });
+            // }
+
+        }
+        // INIT Softmax
+        for (j = 1; j <= 10; j++) { 
+            var softmaxId = "#softmax" + (j-1);
+            $(softmaxId).css({
+                'background-color':"white"
+            });
+        }
+
+        // INIT RESULT
+        $('#resultNeuron').css("color", "rgba(0, 0, 0, 0.0)"); // Font color        
+
+
+    }
