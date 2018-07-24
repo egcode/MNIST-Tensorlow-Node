@@ -112,7 +112,11 @@ function getMnistPredictionFromServer(imageBase64) {
 
             uiState(ENUM_COMPLETED_STATE);
             spinner.stop(target);
-            
+
+            $('html, body').animate({ 
+                scrollTop: $(document).height()-($(window).height() - 1000)}, 1400);
+             
+                     
         },
         error  : function(data) { 
             uiState(ENUM_INITIAL_STATE);
