@@ -67,8 +67,6 @@ def predict_from_restored_session(X):
     parameters = initialize_parameters()
 
     AL, _, cnnL1, cnnL2, cnnL3, dense = forward_propagation_with_layers(X, parameters, pkeep)
-
-    forward_propagation_with_layers
     
     init = tf.global_variables_initializer()
     
