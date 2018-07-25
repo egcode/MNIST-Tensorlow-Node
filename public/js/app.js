@@ -16,39 +16,10 @@ function uiState(state) {
         $("#clear").show(animSpeed);
     }
   }
-
-// function uploadImage() {
-//     $('#uploadForm').submit(function() {
-
-//         var target = document.getElementById('topContainer');
-//         var spinner = new Spinner(opts).spin(target);
-
-//         $("#status").empty().text("File is uploading...");
-//         $(this).ajaxSubmit({
-
-//         error: function(xhr) {
-//             status('Error: ' + xhr.status);
-//             spinner.stop(target);
-//         },
-
-//         success: function(response) {
-//             $("#status").empty().text(response);
-//                 console.log(response);
-//                 console.log("ZAYEBIS UPLOADED");
-//                 uiState(ENUM_PREPROCESS_STATE);
-//                 spinner.stop(target);
-//         }
-//     });
-//         //Very important line, it disable the page refresh.
-//         return false;
-//     });    
-// }
   
 function getMnistPredictionFromServer(imageBase64) {
     console.log("Zayebis getMnistPredictionFromServer");
     console.log(imageBase64);
-    // Hide button
-    // $("#caption").hide(animSpeed);
 
     var target = document.getElementById('topContainer');
     var spinner = new Spinner(opts).spin(target);
@@ -95,7 +66,6 @@ function getMnistPredictionFromServer(imageBase64) {
                 updateSoftmaxLinesPosition();
                 updateReultLinesPosition();
             }, 100);
-              
 
             // SOFTMAX
             assignSoftmaxValues(prediction);
@@ -107,9 +77,11 @@ function getMnistPredictionFromServer(imageBase64) {
             uiState(ENUM_COMPLETED_STATE);
             spinner.stop(target);
 
-            $('html, body').animate({ 
-                scrollTop: $(document).height()-($(window).height() - 1000)}, 1400);
-             
+            // Scroll to Result 
+            $('html, body').animate({
+                scrollTop: $("#bottomDiv").offset().top
+            }, 2000);
+            
                      
         },
         error  : function(data) { 
@@ -148,29 +120,19 @@ function assignDenseAndSoftmaxValues(dense, prediction){
 
             // Neuron color
             var colorV = (255.0 * (1-denseValue));
-            // console.log("denseValue: " + denseValue);
-            // console.log("colorV: " + colorV);
             $(divId).css({
                 'background-color':"rgb(" + colorV + "," + colorV + "," + colorV + ")"
             });
 
             // DENSE Recolor Lines
             var lineId = "#line" + (denseIndex);
-            // console.log("line: " + line);
             $(lineId).css({
                 opacity: 0.9
             });
 
             // SOFTMAX Recolor Lines
             var prediction_int = parseInt(prediction[1]);
-            // var softmaxId = "#softmax" + (prediction_int-1);
             var lineSoftmaxId = "#softmax_" + (prediction_int) + "_line_" + (denseIndex);
-            // console.log("aaa\n\n\n");
-            // console.log("CORRECT denseIndex: " + denseIndex);
-            // console.log("prediction_int: " + prediction_int);
-            // console.log("softmaxId: " + softmaxId);
-            // console.log("lineSoftmaxId: " + lineSoftmaxId);
-
             $(lineSoftmaxId).css({
                 opacity: 0.9
             });
@@ -374,3 +336,120 @@ function adjustLine(from, to, line){
 }
 
 
+    // --------------- Init NN Layers ----------------------
+
+function initAllNNLayers() {
+        // CNN Layer 1
+        for (i = 1; i <= 6; i++) { 
+            var im = '<img id="L1_i' + i  +'_imageView"  src="" class="img-thumbnail" alt="Cinque Terre" width="100" height="100">';
+            $('#layer1').append(im);
+        }
+        
+        // CNN Layer 2
+        for (i = 1; i <= 12; i++) { 
+            var im = '<img id="L2_i' + i  +'_imageView"  src="" class="img-thumbnail" alt="Cinque Terre" width="75" height="75">';
+            $('#layer2').append(im);
+        }
+        
+        // CNN Layer 3
+        for (i = 1; i <= 24; i++) { 
+            var im = '<img id="L3_i' + i  +'_imageView"  src="" class="img-thumbnail" alt="Cinque Terre" width="50" height="50">';
+            $('#layer3').append(im);
+        }
+        
+        // DENSE Layer
+        for (i = 1; i <= 200; i++) { 
+            var rad = 20;
+            var denseId = "dense" + (i-1);
+            var circ = '<div id=' + denseId + ' class=\'grid-item-style\' >0</div>';
+            $('#layerDense').append(circ);
+        }
+        
+        // ADD CNN Lines
+        // Add Line
+        var lineId1 = "cnn_" + 1 + "_line";
+        var lineId2 = "cnn_" + 2 + "_line";
+        var lineId3 = "cnn_" + 3 + "_line";
+        var line1 = '<div class=\"lineCNN\" id=\"'+ lineId1 + '\" ></div>';
+        var line2 = '<div class=\"lineCNN\" id=\"'+ lineId2 + '\" ></div>';
+        var line3 = '<div class=\"lineCNN\" id=\"'+ lineId3 + '\" ></div>';
+        $('#CNNContainer').append(line1);
+        $('#CNNContainer').append(line2);
+        $('#CNNContainer').append(line3);
+        adjustLine(
+            document.getElementById("topContainer"), 
+            document.getElementById("layer1"),
+            document.getElementById(lineId1)
+        );
+        adjustLine(
+            document.getElementById("layer1"), 
+            document.getElementById("layer2"),
+            document.getElementById(lineId2)
+        );
+        adjustLine(
+            document.getElementById("layer2"), 
+            document.getElementById("layer3"),
+            document.getElementById(lineId3)
+        );
+        
+        // ADD Dense Lines
+        for (i = 1; i <= 200; i++) { 
+            var denseId = "dense" + (i-1);
+            // Add Line
+            var lineId = "line" + (i-1);
+            var line = '<div class=\"line\" id=\"'+ lineId + '\"></div>';
+            // console.log("lineId: " + lineId);
+            // console.log("line: " + line);
+        
+            $('#CNNContainer').append(line);
+            adjustLine(
+            document.getElementById('layer3'), 
+            document.getElementById(denseId),
+            document.getElementById(lineId)
+            );
+        }
+        
+        
+        // SOFTMAX Layer
+        for (i = 1; i <= 10; i++) { 
+            var softmaxId = "softmax" + (i-1);
+            var circ = '<div id=' + softmaxId + ' class=\'grid-item-style\' >0</div>';
+            $('#layerSoftmax').append(circ);
+        }
+        
+        // ADD Softmax Lines
+        for (j = 1; j <= 10; j++) { 
+            for (i = 1; i <= 200; i++) { 
+            var softmaxId = "softmax" + (j-1);
+            var denseId = "dense" + (i-1);
+        
+            // Add Line
+            var lineId = "softmax_" + (j-1) + "_line_" + (i-1);
+            var line = '<div class=\"line\" id=\"'+ lineId + '\"></div>';
+        
+            $('#CNNContainer').append(line);
+            adjustLine(
+                document.getElementById(softmaxId), 
+                document.getElementById(denseId),
+                document.getElementById(lineId)
+            );
+            }
+        }
+        
+        // ADD Result Lines
+        for (i = 1; i <= 10; i++) { 
+            var softmaxId = "softmax" + (i-1);
+        
+            // Add Line
+            var lineId = "result_softmax_" + (i-1) + "_line";
+            var line = '<div class=\"line\" id=\"'+ lineId + '\"></div>';
+        
+            $('#CNNContainer').append(line);
+            adjustLine(
+                document.getElementById(softmaxId), 
+                document.getElementById("resultNeuron"),
+                document.getElementById(lineId)
+            );
+        }
+  
+    }

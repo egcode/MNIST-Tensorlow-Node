@@ -72,18 +72,10 @@
               </div>  
         </div> 
 
-        <div class = "separatorDiv">
+        <div class = "separatorDiv" id="bottomDiv">
         </div>
   
-  
     </div>
-
-
-    <!-- <div id="div1" style="width: 100px; height: 100px; top:0; left:0; background:#777; position:relative;"></div>
-    <div id="div2" style="width: 100px; height: 100px; top:300px; left:300px; background:#333; position:relative;"></div>
-
-    <svg width="500" height="500"><line x1="50" y1="50" x2="350" y2="350" stroke="black"/></svg> -->
-
     
   </body>
   <script type="text/javascript" src="/js/app.js"></script>
@@ -96,10 +88,6 @@
 
 
 var canvas = document.getElementById('signature-pad');
-
-// Adjust canvas coordinate space taking into account pixel ratio,
-// to make it look crisp on mobile devices.
-// This also causes canvas to be cleared.
 function resizeCanvas() {
     // When zoomed out to less than 100%, for some very strange reason,
     // some browsers report devicePixelRatio as less than 1
@@ -135,79 +123,15 @@ document.getElementById('guess-digit').addEventListener('click', function () {
   if (signaturePad.isEmpty()) {
     return alert("Please provide a signature first.");
   }
-  
   var imageBase64 = signaturePad.toDataURL('image/jpeg',0.5);
-  // $("#imageView").attr('src', imageBase64);
-
   getMnistPredictionFromServer(imageBase64);
 
-  // console.log("original Base 64 : ");
-  // console.log(imageBase64);
-
-//////////  RESIZED VERSION:
-  // var canvas2=document.getElementById("canvas2");
-  // var ctx=canvas2.getContext("2d");
-  // var maxW=100;
-  // var maxH=100;
-  // var img = new Image;
-  // img.onload = function() {
-  //   var iw=img.width;
-  //   var ih=img.height;
-  //   var scale=Math.min((maxW/iw),(maxH/ih));
-  //   var iwScaled=iw*scale;
-  //   var ihScaled=ih*scale;
-  //   canvas2.width=iwScaled;
-  //   canvas2.height=ihScaled;
-  //   ctx.drawImage(img,0,0,iwScaled,ihScaled);
-  //   var resizedImageBase64 = canvas2.toDataURL("image/jpeg",0.5);
-
-  //   // - 2
-  //   getMnistPredictionFromServer(resizedImageBase64);
-
-  // }
-  // // - 1
-  // img.src = imageBase64; //assigning and performing img.onload function
-
-
 });
-
-// document.getElementById('save-jpeg').addEventListener('click', function () {
-//   if (signaturePad.isEmpty()) {
-//     return alert("Please provide a signature first.");
-//   }
-
-//   var data = signaturePad.toDataURL('image/jpeg');
-//   console.log(data);
-//   window.open(data);
-// });
-
-// document.getElementById('save-svg').addEventListener('click', function () {
-//   if (signaturePad.isEmpty()) {
-//     return alert("Please provide a signature first.");
-//   }
-
-//   var data = signaturePad.toDataURL('image/svg+xml');
-//   console.log(data);
-//   console.log(atob(data.split(',')[1]));
-//   window.open(data);
-// });
-
-// document.getElementById('draw').addEventListener('click', function () {
-//   var ctx = canvas.getContext('2d');
-//   console.log(ctx.globalCompositeOperation);
-//   ctx.globalCompositeOperation = 'source-over'; // default value
-// });
-
-// document.getElementById('erase').addEventListener('click', function () {
-//   var ctx = canvas.getContext('2d');
-//   ctx.globalCompositeOperation = 'destination-out';
-// });
 
 document.getElementById('clear').addEventListener('click', function () {
   signaturePad.clear();
   initColors();
 });
-
 
 // Spinner
 var opts = {
@@ -230,11 +154,6 @@ var opts = {
     shadow: '0 0 1px transparent', // Box-shadow for the lines
     position: 'absolute' // Element positioning
 };
-// var target = document.getElementById('topContainer');
-// var spinner = new Spinner(opts).spin(target);
-// var spinner = new Spinner(opts);
-
-
 
 const ENUM_INITIAL_STATE  = 0,
     ENUM_PROCESS_STATE = 1,
@@ -243,135 +162,8 @@ const ENUM_INITIAL_STATE  = 0,
 // Initial UI state
 uiState(ENUM_INITIAL_STATE);
 
-// UPLOAD
-// $(document).ready(function() {
-
-//     $('#submitButton').bind("click",function() { 
-//         var imgVal = $('#uploadImage').val(); 
-//         if(imgVal=='')  { 
-//             alert("empty input file"); 
-//             return false; 
-//         } else {
-//             uploadImage();
-//         }
-//     }); 
-// });
-
-// CNN Layer 1
-for (i = 1; i <= 6; i++) { 
-  var im = '<img id="L1_i' + i  +'_imageView"  src="" class="img-thumbnail" alt="Cinque Terre" width="100" height="100">';
-  $('#layer1').append(im);
-}
-
-// CNN Layer 2
-for (i = 1; i <= 12; i++) { 
-  var im = '<img id="L2_i' + i  +'_imageView"  src="" class="img-thumbnail" alt="Cinque Terre" width="75" height="75">';
-  $('#layer2').append(im);
-}
-
-// CNN Layer 3
-for (i = 1; i <= 24; i++) { 
-  var im = '<img id="L3_i' + i  +'_imageView"  src="" class="img-thumbnail" alt="Cinque Terre" width="50" height="50">';
-  $('#layer3').append(im);
-}
-
-// DENSE Layer
-for (i = 1; i <= 200; i++) { 
-  var rad = 20;
-  var denseId = "dense" + (i-1);
-  var circ = '<div id=' + denseId + ' class=\'grid-item-style\' >0</div>';
-  $('#layerDense').append(circ);
-}
-
-
-// ADD CNN Lines
-// Add Line
-var lineId1 = "cnn_" + 1 + "_line";
-var lineId2 = "cnn_" + 2 + "_line";
-var lineId3 = "cnn_" + 3 + "_line";
-var line1 = '<div class=\"lineCNN\" id=\"'+ lineId1 + '\" ></div>';
-var line2 = '<div class=\"lineCNN\" id=\"'+ lineId2 + '\" ></div>';
-var line3 = '<div class=\"lineCNN\" id=\"'+ lineId3 + '\" ></div>';
-$('#CNNContainer').append(line1);
-$('#CNNContainer').append(line2);
-$('#CNNContainer').append(line3);
-adjustLine(
-  document.getElementById("topContainer"), 
-  document.getElementById("layer1"),
-  document.getElementById(lineId1)
-);
-adjustLine(
-  document.getElementById("layer1"), 
-  document.getElementById("layer2"),
-  document.getElementById(lineId2)
-);
-adjustLine(
-  document.getElementById("layer2"), 
-  document.getElementById("layer3"),
-  document.getElementById(lineId3)
-);
-
-// ADD Dense Lines
-for (i = 1; i <= 200; i++) { 
-  var denseId = "dense" + (i-1);
-  // Add Line
-  var lineId = "line" + (i-1);
-  var line = '<div class=\"line\" id=\"'+ lineId + '\"></div>';
-  // console.log("lineId: " + lineId);
-  // console.log("line: " + line);
-
-  $('#CNNContainer').append(line);
-  adjustLine(
-    document.getElementById('layer3'), 
-    document.getElementById(denseId),
-    document.getElementById(lineId)
-  );
-}
-
-
-// SOFTMAX Layer
-for (i = 1; i <= 10; i++) { 
-  var softmaxId = "softmax" + (i-1);
-  var circ = '<div id=' + softmaxId + ' class=\'grid-item-style\' >0</div>';
-  $('#layerSoftmax').append(circ);
-}
-
-// ADD Softmax Lines
-for (j = 1; j <= 10; j++) { 
-  for (i = 1; i <= 200; i++) { 
-    var softmaxId = "softmax" + (j-1);
-    var denseId = "dense" + (i-1);
-
-    // Add Line
-    var lineId = "softmax_" + (j-1) + "_line_" + (i-1);
-    var line = '<div class=\"line\" id=\"'+ lineId + '\"></div>';
-
-    $('#CNNContainer').append(line);
-    adjustLine(
-      document.getElementById(softmaxId), 
-      document.getElementById(denseId),
-      document.getElementById(lineId)
-    );
-  }
-}
-
-
-// ADD Result Lines
-for (i = 1; i <= 10; i++) { 
-    var softmaxId = "softmax" + (i-1);
-
-    // Add Line
-    var lineId = "result_softmax_" + (i-1) + "_line";
-    var line = '<div class=\"line\" id=\"'+ lineId + '\"></div>';
-
-    $('#CNNContainer').append(line);
-    adjustLine(
-      document.getElementById(softmaxId), 
-      document.getElementById("resultNeuron"),
-      document.getElementById(lineId)
-    );
-}
-
+// Init All NN Layers
+initAllNNLayers();
 
   </script>
   
