@@ -1,7 +1,7 @@
 # MNIST Prediction
 
 ## Just draw any digit and CNN will predict the result
-<img src="images/1.png" width="550">
+<img src="images/mnist.gif" width="550">
 
 
 ## Description
