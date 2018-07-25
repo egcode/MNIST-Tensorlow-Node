@@ -12,8 +12,11 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import warnings
 warnings.filterwarnings("ignore")
  
-raw_image_data_string = sys.argv[1]    # FROM NODE
-model_path = sys.argv[2]               # FROM NODE
+###########################################################################
+### Getting base64 image from NodeJS and convert it to numpy array with shape (1,28,28,1)
+###########################################################################
+raw_image_data_string = sys.argv[1]    # base64 image FROM NODE
+model_path = sys.argv[2]               # path of the cached model FROM NODE
 
 # clear base64 image data
 string_to_remove = "data:image/jpeg;base64,"
@@ -45,13 +48,15 @@ def rescale_image(image):
 test_image = rescale_image(numpy_image)
 
 image = test_image.reshape(1,28,28,1)
-dummy_label = np.array([[0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]])
+
+###########################################################################
+### Predict from file
+###########################################################################
 
 import tensorflow as tf
 from tensorflow.python.framework import ops
 from propagation_forward import *
-
-    
+  
 def predict_from_restored_session(X):
     
     ops.reset_default_graph()                         # to be able to rerun the model without overwriting tf variables
@@ -87,14 +92,14 @@ def predict_from_restored_session(X):
                         
         return Y_hat, L1, L2, L3, D1
     
-###############
-### Predict from file
-##############
-
-def rgb2gray(rgb):
-    return np.dot(rgb[...,:3], [0.299, 0.587, 0.114])
 
 pred_from_sess, L1, L2, L3, D1 = predict_from_restored_session(image)
+
+
+
+###########################################################################
+### Rest of the code below is just for exporting all layers into NodeJS
+###########################################################################
 
 # CNN Layer 1
 layer1_image1 = L1[0,:,:,0]
