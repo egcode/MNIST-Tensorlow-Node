@@ -60,12 +60,6 @@ function getMnistPredictionFromServer(imageBase64) {
             var dense = extractDenseFromResponse(responseFromPython);
             // console.log("\nDense: " + dense);
             assignDenseAndSoftmaxValues(dense, prediction);
-            setTimeout(function(){
-                updateCNNLinesPosition();
-                updateDenseLinesPosition();
-                updateSoftmaxLinesPosition();
-                updateReultLinesPosition();
-            }, 100);
 
             // SOFTMAX
             assignSoftmaxValues(prediction);
@@ -77,12 +71,20 @@ function getMnistPredictionFromServer(imageBase64) {
             uiState(ENUM_COMPLETED_STATE);
             spinner.stop(target);
 
-            // Scroll to Result 
-            $('html, body').animate({
-                scrollTop: $("#bottomDiv").offset().top
-            }, 2000);
             
-                     
+            setTimeout(function(){
+                updateCNNLinesPosition();
+                updateDenseLinesPosition();
+                updateSoftmaxLinesPosition();
+                updateReultLinesPosition();
+
+                // Scroll to Result 
+                $('html, body').animate({
+                    scrollTop: $("#bottomDiv").offset().top
+                }, 2000);
+
+            }, 100);
+
         },
         error  : function(data) { 
             uiState(ENUM_INITIAL_STATE);
