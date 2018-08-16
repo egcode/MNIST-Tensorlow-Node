@@ -1,6 +1,6 @@
 # MNIST Prediction
 
-## Just draw any digit and CNN will predict the result
+## Just draw any digit and CNN will predict the result. <br> You can try it [here](https://egstack.com/index_mnist.html)
 <img src="images/mnist.gif" width="550">
 
 
